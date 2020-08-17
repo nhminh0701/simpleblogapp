@@ -7,9 +7,9 @@ import { uersReducer } from './usersReducer'
 
 
 export default combineReducers({
-    albumsReducer,
-    commentsReducer,
-    photosReducer,
-    postsReducer,
-    uersReducer
+    albums: albumsReducer,
+    comments: commentsReducer,
+    photos: photosReducer,
+    posts: postsReducer,
+    users: uersReducer
 })

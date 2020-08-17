@@ -1,9 +1,20 @@
-import { SET_ALBUMS } from '../actions/albumsAction'
+import { 
+    REQUEST_ALBUMS,
+    RECEIVE_ALBUMS
+ } from '../actions/albumsAction'
 
-export const albumsReducer = (state = { albums: [] }, action) => {
+export const albumsReducer = (state = { 
+    albums: [], 
+    fetching: false
+}, action) => {
     switch (action.type) {
-        case SET_ALBUMS:
-            return action.payload;
+        case REQUEST_ALBUMS:
+            return {
+                ...state,
+                fetching: action.payload.fetching
+            };
+        case RECEIVE_ALBUMS:
+            return action.payload
         default:
             return state;
     }

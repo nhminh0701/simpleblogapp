@@ -1,8 +1,29 @@
-export const SET_COMMENTS = 'SET COMMENTS'
+export const REQUEST_COMMENTS = 'REQUEST COMMENTS'
+export const RECEIVE_COMMENTS = 'RECEIVE COMMENTS'
 
-export const setComments = (comments) => {
+
+const requestComments = () => {
     return {
-        type: SET_COMMENTS,
-        payload: comments
+        type: REQUEST_COMMENTS,
+        payload: {
+            fetching: true
+        }
     }
+}
+
+const receiveComments = (comments) => {
+    return {
+        type: RECEIVE_COMMENTS,
+        payload: {
+            fetching: false,
+            comments: comments
+        }
+    }
+}
+
+export const requestCommentData = () => (dispatch) => {
+    dispatch(requestComments())
+    return fetch('https://jsonplaceholder.typicode.com/comments')
+            .then(res => res.json())
+            .then(data => dispatch(receiveComments(data)))
 }

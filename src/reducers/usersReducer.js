@@ -1,9 +1,20 @@
-import { SET_USERS } from '../actions/usersAction'
+import { 
+    REQUEST_USERS,
+    RECEIVE_USERS,
+} from '../actions/usersAction'
 
-export const uersReducer = (state = { users: [] }, action) => {
+export const uersReducer = (state = { 
+    users: [],
+    fetching: false, 
+}, action) => {
     switch (action.type) {
-        case SET_USERS:
-            return action.payload;
+        case REQUEST_USERS:
+            return {
+                ...state,
+                fetching: action.payload.fetching
+            };
+        case RECEIVE_USERS:
+            return action.payload
         default:
             return state;
     }

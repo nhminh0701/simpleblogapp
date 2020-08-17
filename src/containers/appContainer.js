@@ -1,29 +1,25 @@
 import App from '../App'
 import { connect } from 'react-redux'
 
-import { setAlbums } from '../actions/albumsAction'
-import { setComments } from '../actions/commentsAction'
-import { setPhotos } from '../actions/photosAction'
-import { setPosts } from '../actions/postsAction'
-import { sethUsers } from '../actions/usersAction'
+import { requestAlbumsData } from '../actions/albumsAction'
+import { requestCommentData } from '../actions/commentsAction'
+import { requestPhotoData } from '../actions/photosAction'
+import { requestPostData } from '../actions/postsAction'
+import { requestUserData } from '../actions/usersAction'
 
 const mapStateToProps = (state) => {
     return {
-      albums: state.albums,
-      comments: state.comments,
-      photos: state.photos,
-      posts: state.posts,
-      users: state.users
+      state: state
     }
   }
   
   const mapDispatchToProps = (dispatch) => {
     return {
-      setAlbums: (albums) => {dispatch(setAlbums(albums))},
-      setComments: (comments) => {dispatch(setComments(comments))},
-      setPhotos: (photos) => {dispatch(setPhotos(photos))},
-      setPosts: (posts) => {dispatch(setPosts(posts))},
-      sethUsers: (users) => {dispatch(sethUsers(users))}
+      requestalbums: () => dispatch(requestAlbumsData()),
+      requestComments: () => dispatch(requestCommentData()),
+      requestPhotos: () => dispatch(requestPhotoData()),
+      requestPosts: () => dispatch(requestPostData()),
+      requestUsers: () => dispatch(requestUserData())
     }
   }
   

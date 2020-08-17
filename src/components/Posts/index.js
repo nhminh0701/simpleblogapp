@@ -1,43 +1,25 @@
-import React, { Component } from 'react'
-import { Post } from './Post'
+import React from 'react'
+import {
+    Switch,
+    Route,
+    useRouteMatch
+} from 'react-router-dom'
+import PostList from './PostList'
+import PostDetail from './PostDetail'
 
-const POST_PER_LOAD = 5
 
-export default class Posts extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            posts: []
-        }
-        
-        
-    }
+export default function Posts() {
+    let { path, url } = useRouteMatch()
+    console.log(path + ' ' + url)
 
-    componentWillMount() {
-        this.loadPost()
-    }
-
-    componentDidMount() {
-        console.log('called');
-    }
-
-    loadPost() {
-        let promises = []
-        let startPostIndex = this.state.posts.length + 1
-        for (let i = startPostIndex; 
-            i < startPostIndex + POST_PER_LOAD; i++) {
-                promises.push(fetch(`https://jsonplaceholder.typicode.com/posts/${i}/`)
-                            .then(res => res.json()))
-            }
-        Promise.all(promises)
-        .then(values => {
-            console.log(values)
-        })
-    }
-
-    render() {
-        return (
-            <div>Hello</div>
-        )
-    }
+    return (
+        <Switch>
+            <Route
+                exact
+                path={`${path}/post/:postId`}
+                component={PostDetail}
+            />
+            <Route exact path='' component={PostList} />
+        </Switch>
+    )
 }
