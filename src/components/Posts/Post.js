@@ -10,7 +10,8 @@ export function Post(props) {
 
         return (
             <div>
-                <p>{props.user.username}</p>
+                <Link to={`/users/${props.user.id}`}
+                >{props.user.username}</Link>
 
                 <article>
                     <h5>{props.post.title}</h5>
@@ -21,7 +22,7 @@ export function Post(props) {
                 </article>
 
                 <Link 
-                    to={`/post/${props.post.id}`}
+                    to={`/posts/${props.post.id}`}
                 >Read more</Link>
 
                 <div>{props.comments.length} comments</div>

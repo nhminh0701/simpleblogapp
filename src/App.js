@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import SearchBox from './components/SearchBox'
-//import ConnectedPosts from './components/Posts'
-import PostList from './components/Posts/PostList'
-import PostDetail from './components/Posts/PostDetail'
+import ConnectedPosts from './components/Posts'
+import ConnectedUser from './components/UserProfile'
+
 import './App.css';
 
 class App extends Component {
@@ -30,10 +30,11 @@ class App extends Component {
     return (
       <div className="App">
         <SearchBox />
-  
         <Router>
-          <Route exact path='/post/:postId' component={PostDetail} />
-          <Route exact path='/' component={PostList} />
+          <Switch>
+            <Route exact path='/users/:userId' component={ConnectedUser} />
+            <Route exact path='' component={ConnectedPosts} />
+          </Switch>
         </Router>
       </div>
     );

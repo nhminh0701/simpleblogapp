@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { Comment } from './Comment'
+import { Link } from 'react-router-dom'
+
 
 function PostDetailContainer(props) {
     let { postId } = useParams()
@@ -96,7 +98,8 @@ class PostDetail extends Component {
     getMainContent() {
         return (
             <div className="content">
-                <p>{this.state.user.username}</p>
+                <Link to={`/users/${this.state.user.id}`}>
+                    {this.state.user.username}</Link>
                 <h5>{this.state.post.title}</h5>
                 <article>{this.state.post.body}</article>
             </div>
