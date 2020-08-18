@@ -1,9 +1,8 @@
 import React from 'react'
 
 
-export function UserProfile(props) {
-    console.log(props)
-    let renderedComponent = props.user.email  
+export default function UserProfile(props) {
+    let renderedComponent = props.user  
             ?   <ul>
                    <li>{props.user.email}</li> 
                     <ul id="address">

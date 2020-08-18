@@ -1,21 +1,24 @@
 import React, { Component } from 'react'
-import { 
-    Route,
-    Switch,
-    useParams
+import {  
+    useRouteMatch,
+    useParams,
+    NavLink
 } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { UserProfile } from './UserProfile'
+
+import { UserRouter } from './UserRouter'
 
 
 
 export default function() {
     let { userId } = useParams()
+    let {path, url} = useRouteMatch()
+    //console.log(path + ' ' + url)
 
     return (
         <React.Fragment>
-            <ConnectedUser userId={parseInt(userId)}/>
+            <ConnectedUser userId={parseInt(userId)} path={path} url={url}/>
         </React.Fragment>
     )
 } 
@@ -25,9 +28,12 @@ class User extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            user: {}
+            user: !this.props.users.fetching ? 
+            this.props.users.users.find(val => val.id === this.props.userId) :
+            {}
         }
     }
+    
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.users.fetching && !this.props.users.fetching) {
@@ -51,21 +57,16 @@ class User extends Component {
                         <p>User not found</p>
                     }
                 </header>
-    
-                <Switch>
-                    <Route 
-                        exact path='' 
-                        render={(props) => <UserProfile {...props} user={this.state.user} />} 
-                    />
-                        
-    
-                    <Route exact path='posts' />
-    
-                    <Route exact path='albums' />
-    
-                    <Route exact path='albums/:albumId'/>
-    
-                </Switch>
+                
+                <nav>
+                    <ul>
+                        <li><NavLink to={`${this.props.url}`}>Profile</NavLink></li>
+                        <li><NavLink to={`${this.props.url}/posts`}>Posts</NavLink></li>
+                        <li><NavLink to={`${this.props.url}/albums`}>Albums</NavLink></li>
+                    </ul>
+                </nav>
+                
+                <UserRouter path={this.props.path} user={this.state.user} />
             </div>
         )
     }
@@ -74,6 +75,8 @@ class User extends Component {
 User.prototypes = {
     users: PropTypes.object.isRequired,
     userId: PropTypes.number.isRequired,   
+    path: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired
 }
 
 const mapPropsWithState = (state) => {

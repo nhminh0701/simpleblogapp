@@ -29,11 +29,12 @@ class App extends Component {
 
     return (
       <div className="App">
-        <SearchBox />
+        
         <Router>
+          <SearchBox />
           <Switch>
-            <Route exact path='/users/:userId' component={ConnectedUser} />
-            <Route exact path='' component={ConnectedPosts} />
+            <Route path='/users/:userId' component={ConnectedUser} />
+            <Route path='' component={ConnectedPosts} />
           </Switch>
         </Router>
       </div>

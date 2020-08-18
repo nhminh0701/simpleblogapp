@@ -35,12 +35,7 @@ class Posts extends Component {
 
             renderPosts.push(
                 <li key={i}>
-                    <Post 
-                        post={post} 
-                        user={user}
-                        comments={comments}
-                    />
-                </li>
+                    <Post post={post} user={user} comments={comments} /></li>
             )
         }
         return renderPosts

@@ -22,23 +22,44 @@ function PostDetailContainer(props) {
 class PostDetail extends Component {
     constructor(props) {
         super(props) 
-        this.state = {
-            post: {},
-            user: {},
-            comments: [],
-            found: true,
-        }
-        this.isStillFetching = this.isStillFetching.bind(this)
+        this.getStateFromProps = this.getStateFromProps.bind(this)
+
+        this.state = 
+            this.isFetching(props) ?
+            {
+                post: {},
+                user: {},
+                comments: [],
+                found: true,
+            }   : 
+            this.getStateFromProps(props)
+
         this.getComments = this.getComments.bind(this)
         this.getMainContent = this.getMainContent.bind(this)
     }
 
-    isStillFetching() {
-        if (!this.props.posts || !this.props.users) {
-            return true;
-        } else {
-            return this.props.users.fetching     
-                || this.props.posts.fetching
+    getStateFromProps() {
+        let post = this.props.posts.posts.find(val => val.id === this.props.postId)
+
+        if (!post) {
+            
+            return {
+                post: {},
+                user: {},
+                comments: [],
+                found: false,
+            }
+        } 
+
+        let user = this.props.users.users.find(val => val.id === post.userId)
+        let comments = this.props.comments.comments.filter(
+            val => val.postId === this.props.postId)
+                
+        return {
+            post: post,
+            user: user,
+            comments: comments,
+            found: true
         }
     }
 
@@ -61,37 +82,14 @@ class PostDetail extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        let somePrevFetch = prevProps.users.fetching 
-                            || prevProps.comments.fetching
-                            || prevProps.posts.fetching
+    isFetching(props) {
+        return props.users.fetching || props.comments.fetching || props.posts.fetching
+    }
 
-        let allCurrentFetched = !this.props.users.fetching
-                            && !this.props.comments.fetching
-                            && !this.props.posts.fetching
-
-        if (somePrevFetch && allCurrentFetched) {
-            
-            let post = this.props.posts.posts.find(val => val.id === this.props.postId)
-
-            if (!post) {
-                this.setState({
-                    ...this.state,
-                    found: false
-                });
-                return;
-            } 
-
-            let user = this.props.users.users.find(val => val.id === post.userId)
-            let comments = this.props.comments.comments.filter(
-                val => val.postId === this.props.postId)
+    componentDidUpdate(prevProps) {
+        if (this.isFetching(prevProps) && !this.isFetching(this.props)) {
                 
-            this.setState({
-                post: post,
-                user: user,
-                comments: comments,
-                found: true
-            })
+            this.setState(this.getStateFromProps())
         }
     }
 
@@ -110,7 +108,7 @@ class PostDetail extends Component {
         return (
             <div className="post-detail">
                 {
-                    this.isStillFetching() 
+                    this.isFetching(this.props) 
                     ?   <p>Loading</p>
                     :   this.state.found
                     ?   <section>
